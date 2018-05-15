@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lnjecit.generator.dao.GeneratorDao">
+
+    <resultMap id="tableMap" type="com.lnjecit.generator.entity.Table">
+        <result column="table_schema" property="tableSchema"/>
+        <result column="table_name" property="tableName"/>
+        <result column="engine" property="engine"/>
+        <result column="table_comment" property="tableComment"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="columnMap" type="com.lnjecit.generator.entity.Column">
+        <result column="column_name" property="columnName"/>
+        <result column="data_type" property="dataType"/>
+        <result column="column_comment" property="columnComment"/>
+        <result column="column_key" property="columnKey"/>
+    </resultMap>
+
+    <sql id="Base_Table_Column_List">
+		table_schema,table_name,engine,table_comment,create_time
+	</sql>
+
+    <sql id="Base_Column_List">
+        column_name,data_type,column_comment,column_key
+    </sql>
+
+    <select id="getTableList" resultMap="tableMap">
+        SELECT
+        <include refid="Base_Table_Column_List"/>
+        FROM
+        information_schema.tables
+        WHERE
+        table_schema = (SELECT DATABASE())
+        <if test="tableName != null and tableName.trim() != ''">
+            and table_name like concat('%', #{tableName}, '%')
+        </if>
+        ORDER BY
+        create_time DESC
+    </select>
+
+    <select id="getTableByName" resultMap="tableMap">
+        SELECT
+        <include refid="Base_Table_Column_List"/>
+        FROM
+        information_schema.tables
+        WHERE
+        table_schema = (SELECT DATABASE())
+        AND table_name = #{tableName}
+    </select>
+
+    <select id="getColumnListByTableName" resultMap="columnMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        information_schema. COLUMNS
+        WHERE
+        table_name = #{tableName}
+        AND table_schema = (SELECT DATABASE())
+        ORDER BY
+        ordinal_position
+    </select>
+
+</mapper>
