@@ -25,7 +25,11 @@ import io.swagger.annotations.ApiModel;
 public class ${className} extends BaseEntity{
 
 #foreach ($field in $fieldList)
-private $field.fieldType $field.fieldName;//$field.fieldComment
+/**
+ * $field.fieldComment
+ */
+private $field.fieldType $field.fieldName;
+
 #end
 
 }

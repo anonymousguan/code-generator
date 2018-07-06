@@ -54,7 +54,8 @@ public class GeneratorUtil {
 
         // 表名转换成Java类名
         String className = tableNameToClassName(table.getTableName(), generatorProperties.getProperty("tablePrefix"));
-        className = StringUtil.initCapitalize(className);
+        className = StringUtil.transferToCamel(className, true);
+//        className = StringUtil.initCapitalize(className);
 
         ClazzInfo clazzInfo = new ClazzInfo();
         clazzInfo.setClassName(className);
@@ -254,13 +255,14 @@ public class GeneratorUtil {
         buffer.append("UPDATE " + tableName + "\r\n");
         buffer.append("\t\t<set>\r\n");
         for (int i = 0; i < columnNames.size(); i++) {
-            if ("datetime".equalsIgnoreCase(columnTypes.get(i))) {
+            /*if ("datetime".equalsIgnoreCase(columnTypes.get(i))) {
                 buffer.append("\t\t\t<if test=\"" + StringUtil.transferToCamel(columnNames.get(i), false) + " != null\">\r\n");
             } else {
                 buffer.append("\t\t\t<if test=\"" + StringUtil.transferToCamel(columnNames.get(i), false) + " != null and " + StringUtil.transferToCamel(columnNames.get(i), false) + " != ''\">\r\n");
             }
             buffer.append("\t\t\t\t" + columnNames.get(i) + "=#{" + StringUtil.transferToCamel(columnNames.get(i), false) + "},\r\n");
-            buffer.append("\t\t\t</if>\r\n");
+            buffer.append("\t\t\t</if>\r\n");*/
+            buffer.append("\t\t\t\t" + columnNames.get(i) + "=#{" + StringUtil.transferToCamel(columnNames.get(i), false) + "},\r\n");
         }
         buffer.append("\t\t</set>\r\n");
         buffer.append("\t\tWHERE id = #{id}\r");
