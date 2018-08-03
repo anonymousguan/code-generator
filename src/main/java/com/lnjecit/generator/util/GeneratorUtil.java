@@ -123,7 +123,7 @@ public class GeneratorUtil {
 
     public static String tableNameToClassName(String tableName, String tablePrefix) {
         if (StringUtil.isNotBlank(tableName)) {
-            return tableName.replace(tablePrefix, "");
+            return tableName.replaceFirst(tablePrefix, "");
         }
         throw new NullPointerException("tableName can not be null");
     }
